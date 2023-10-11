@@ -1,3 +1,4 @@
+import shop.Category;
 import shop.Customer;
 import shop.Order;
 import shop.Product;
@@ -9,6 +10,9 @@ import java.util.function.Predicate;
 
 public class Main {
     public static void main(String[] args) {
+
+        Category checkFor = (str, x) -> x.getCategory().equals(str);
+
         Product p1 = new Product("libro1", "Books", 101.5);
         Product p2 = new Product("libro2", "Books", 23.5);
         Product p3 = new Product("libro3", "Books", 121.5);
@@ -68,24 +72,29 @@ public class Main {
 
         //ESERCIZIO 1
 
-        Predicate<Product> productIsBooks = p -> p.getCategory().equals("Books");
+        // Predicate<Product> productIsBooks = p -> p.getCategory().equals("Books");
         Predicate<Product> priceMore100 = p -> p.getPrice() > 100;
 
-        List<Product> lista1 = listaProdotti.stream().filter(productIsBooks.and(priceMore100)).toList();
+        List<Product> lista1 = listaProdotti.stream().filter(p -> checkFor.isCategory("Books", p)).filter(priceMore100).toList();
+        System.out.println(" ");
         System.out.println("elementi book con prezzo superiori a 100");
         lista1.forEach(el -> System.out.println(el));
 
         //ESERCIZIO 2
-        Predicate<Product> productIsBaby = p -> p.getCategory().equals("Baby");
-        List<Product> lista2 = listaProdotti.stream().filter(productIsBaby).toList();
 
+        //Predicate<Product> productIsBaby = p -> p.getCategory().equals("Baby");Predicate<Product> productIsBooks = p -> p.getCategory().equals("Books");
+        List<Product> lista2 = listaProdotti.stream().filter(p -> checkFor.isCategory("Baby", p)).toList();
+
+        System.out.println(" ");
         System.out.println("elementi categoria baby");
         lista2.forEach(el -> System.out.println(el));
 
         //ESERCIZIO 3
-        Predicate<Product> productIsBoys = p -> p.getCategory().equals("Boy");
-        List<Product> lista3 = listaProdotti.stream().filter(productIsBoys).toList();
 
+        //Predicate<Product> productIsBooks = p -> p.getCategory().equals("Boy");
+        List<Product> lista3 = listaProdotti.stream().filter(p -> checkFor.isCategory("Boy", p)).toList();
+
+        System.out.println(" ");
         System.out.println("elementi categoria boy scontati del 10%");
         lista3.forEach(p -> {
             p.setSconto();
@@ -99,6 +108,7 @@ public class Main {
         Predicate<Order> orderDate = p -> p.getOrderDate().isAfter(initialDate) && p.getOrderDate().isBefore(finalDate);
         List<Order> lista4 = listaOrder.stream().filter(orderIter2.and(orderDate)).toList();
 
+        System.out.println(" ");
         System.out.println("ordini effettuati da clienti tier 2 tra il 1 feb e il 1 apr 2021");
         lista4.forEach(el -> System.out.println(el));
     }
